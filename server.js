@@ -6,7 +6,7 @@ var express = require('express'),
     mongoose = require('monggose');
 
 server.get('/test', function (req, res) {
-  res.write("Welcome to my amazoing app");
+  res.write("Welcome to my amazing app");
   res.end();
 });
 
