@@ -28,7 +28,7 @@ router.post('/', function (req, res) {
 
   articleOptions.category = articleOptions.category.split(/,\s?/);
 
-  Article.new(req.body.article, articleOptions, function (err, newArticle) {
+  Article.new(articleOptions, function (err, newArticle) {
     if (err) {
       res.redirect(302, '/articles/new');
     } else {
