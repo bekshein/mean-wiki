@@ -2,7 +2,7 @@
 
 var express = require('express'),
     router  = express.Router(),
-    Article = require('./models/article.js');
+    Article = require('../models/article');
 
 // renders all articles stored in db
 router.get('/', function (req, res) {

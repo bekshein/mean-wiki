@@ -36,13 +36,11 @@ server.use(function (req, res, next) {
 });
 
 // model based controllers
-var articleController = require('./controllers/article.js');
-server.use('/articles', articleController);
+server.use('/articles', require('./controllers/article'));
 
 
-server.get('/test', function (req, res) {
-  res.write("Welcome to my amazing app");
-  res.end();
+server.get('/', function (req, res) {
+  res.render('welcome');
 });
 
 
