@@ -4,7 +4,7 @@ var express = require('express'),
     router  = express.Router(),
     Article = require('../models/article');
 
-// renders all articles stored in db
+// INDEX all articles stored in db
 router.get('/', function (req, res) {
   Article.find({}, function (err, allArticles) {
     if (err) {
@@ -17,12 +17,12 @@ router.get('/', function (req, res) {
   });
 });
 
-// renders new article form
+// NEW article form
 router.get('/new', function (req, res) {
   res.render('articles/new');
 });
 
-// posts new article and redirects
+// CREATE new article and redirects
 router.post('/', function (req, res) {
   var articleOptions = req.body.article;
 
@@ -37,7 +37,7 @@ router.post('/', function (req, res) {
   });
 });
 
-// render article by id
+// SHOW article by id
 router.get('/:id', function (req, res) {
   Article.findById(req.params.id, function (err, specificArticle) {
     if (err) {
@@ -50,7 +50,18 @@ router.get('/:id', function (req, res) {
   });
 });
 
-// render edit article by id form
+// DELETE article and redirects
+router.delete('/:id', function (req, res) {
+  Article.findByIdAndRemove(req.params.id, function (err) {
+    if (err) {
+      res.redirect(302, '/articles/show');
+    } else {
+      res.redirect(302, '/articles');
+    }
+  });
+});
+
+// EDIT article by id form
 router.get('/:id/edit', function (req, res) {
   Article.findById(req.params.id, function (err, specificArticle) {
     if (err) {
@@ -63,7 +74,7 @@ router.get('/:id/edit', function (req, res) {
   });
 });
 
-// updates article and redirects
+// UPDATE article and redirects
 router.patch('/:id', function (req, res) {
   var articleOptions = req.body.article;
 
@@ -78,16 +89,6 @@ router.patch('/:id', function (req, res) {
   });
 });
 
-// deletes article and redirects
-router.delete('/:id', function (req, res) {
-  Article.findByIdAndRemove(req.params.id, function (err) {
-    if (err) {
-      res.redirect(302, '/articles/show');
-    } else {
-      res.redirect(302, '/articles');
-    }
-  });
-});
 
 // router export
 module.exports = router;
