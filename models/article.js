@@ -8,7 +8,7 @@ var articleSchema = new Schema({
     date: Date,
     category: [ String ],
     summary: { type: String, maxlength: 140 },
-    article: { type: String, required: true }
+    content: { type: String, required: true }
 });
 
 // article model
