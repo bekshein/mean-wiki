@@ -22,6 +22,12 @@ server.use(session({
   saveUninitialized: true
 }));
 
+server.use(function (req, res, next) {
+    res.locals.flash  = req.session.flash || {};
+    req.session.flash = {};
+    next();
+});
+
 server.use(morgan('dev'));
 server.use(express.static('./public'));
 server.use(expressEjsLayouts);
@@ -37,7 +43,8 @@ server.use(function (req, res, next) {
 
 // model based controllers
 server.use('/articles', require('./controllers/articles'));
-
+server.use('/session', require('./controllers/session'));
+server.use('/users', require('./controllers/users'));
 
 server.get('/', function (req, res) {
   res.render('welcome');
