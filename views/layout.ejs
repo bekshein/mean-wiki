@@ -10,6 +10,10 @@
   <script src="/app.js"></script>
 </head>
 <body>
+  <% if (flash.message) { %>
+    <%= flash.message %>
+  <% } %>
+
   <%- body %>
 </body>
 </html>
