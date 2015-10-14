@@ -36,7 +36,7 @@ server.use(function (req, res, next) {
 });
 
 // model based controllers
-server.use('/articles', require('./controllers/article'));
+server.use('/articles', require('./controllers/articles'));
 
 
 server.get('/', function (req, res) {
