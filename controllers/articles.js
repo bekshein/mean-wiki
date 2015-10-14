@@ -29,23 +29,18 @@ router.post('/', function (req, res) {
   newArticle.save(function (err, article) {
     if (err) {
       console.log(err);
-    } else {
-      res.redirect(302, '/articles');
-    }
-  });
-});
-/*  Article.new(req.body.article, function (err, newArticle) {
-    if (err) {
       res.redirect(302, '/articles/new');
     } else {
       res.redirect(302, '/articles');
     }
   });
-}); */
+});
 
 // SHOW article by id
 router.get('/:id', function (req, res) {
-  Article.findById(req.params.id, function (err, specificArticle) {
+  var articleID = req.params.id;
+
+  Article.findById(articleID, function (err, specificArticle) {
     if (err) {
       res.redirect(302, '/articles/index');
     } else {
@@ -58,7 +53,9 @@ router.get('/:id', function (req, res) {
 
 // DELETE article and redirects
 router.delete('/:id', function (req, res) {
-  Article.findByIdAndRemove(req.params.id, function (err) {
+  var articleID = req.params.id;
+
+  Article.findByIdAndRemove({ _id: articleID }, function (err) {
     if (err) {
       res.redirect(302, '/articles/show');
     } else {
@@ -69,9 +66,12 @@ router.delete('/:id', function (req, res) {
 
 // EDIT article by id form
 router.get('/:id/edit', function (req, res) {
-  Article.findById(req.params.id, function (err, specificArticle) {
+  var articleID = req.params.id;
+
+  Article.findById({ _id: articleID }, function (err, specificArticle) {
     if (err) {
-      res.redirect(302, '/articles/index');
+      res.write("Article Update is Bad");
+      res.end();
     } else {
       res.render('articles/edit', {
         article: specificArticle
@@ -82,7 +82,10 @@ router.get('/:id/edit', function (req, res) {
 
 // UPDATE article and redirects
 router.patch('/:id', function (req, res) {
-  Article.findByIdAndUpdate(req.params.id, req.body.article, function (err, updatedArticle) {
+  var articleID = req.params.id;
+  var articleParams = req.body.article;
+
+  Article.findByIdAndUpdate({ _id: articleID }, articleParams, function (err, updatedArticle) {
     if (err) {
       res.redirect(302, '/articles/edit');
     } else {
