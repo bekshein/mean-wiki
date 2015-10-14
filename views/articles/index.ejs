@@ -1,0 +1,9 @@
+<h3>All Articles</h3>
+
+<% articles.forEach(function (article, i) { %>
+  <div>
+    <h4><%= article.title %> - <small>by <%= article.author %></small></h4>
+    <p><%= article.summary %></p>
+  </div>
+  <hr/>
+<% }) %>
