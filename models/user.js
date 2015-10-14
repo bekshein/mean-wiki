@@ -8,6 +8,21 @@ var userSchema = new Schema({
     password: { type: String, required: true }
 });
 
+// creates user method to be used on user routes
+userSchema.statics.findOrCreateByEmail = function (params, callback) {
+  this.findOne({
+    email: params.email
+  }, function (err, user) {
+    if (err) {
+      callback(err, null);
+    } else if (user) {
+      callback(null, user);
+    } else {
+      this.model.create(params, callback);
+    }
+  });
+};
+
 // user model
 var User = mongoose.model('User', userSchema);
 
