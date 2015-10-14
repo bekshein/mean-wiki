@@ -1,0 +1,44 @@
+<h2>Create a New Article</h2>
+<form action="/articles" method="post">
+  <h4>Article Title</h4>
+  <input type="text"
+         name="article[title]"
+         placeholder="title of article"><br/>
+  <h4>Author Name</h4>
+  <input type="text"
+         name="article[author]"
+         placeholder="author of article"><br/>
+  <h4>Date Created</h4>
+  <input type="date"
+         name="article[date]"
+         default="Date.now"><br/>
+  <h4>Categories</h4>
+  <label for="category1">category 1</label>
+  <input id="category1"
+         type="checkbox"
+         name="article[category][]"
+         value="category1">
+  <label for="category2">category 2</label>
+  <input id="category2"
+          type="checkbox"
+          name="article[category][]"
+          value="category2">
+  <label for="category3">category 3</label>
+  <input id="category3"
+         type="checkbox"
+         name="article[category][]"
+         value="category3">
+  <label for="category4">category 4</label>
+  <input id="category4"
+         type="checkbox"
+         name="article[category][]"
+         value="category4"><br/>
+  <h4>Summary</h4>
+  <input type="text"
+         name="article[summary]"
+         maxlength=140
+         placeholder="summary of article, limit 140 characters"><br/>
+  <h4>Write away...</h4>
+  <textarea name="article[content]"></textarea><br/>
+  <input type="submit" value="Post It">
+</form>
