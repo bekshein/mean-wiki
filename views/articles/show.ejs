@@ -6,6 +6,7 @@
   <p>categories: <%= article.category.join(' & ') %></p>
   <p><%= article.summary %></p>
   <p><%= article.content %></p>
+  <a href="/articles/<%= article._id %>/edit">Edit this Article</a><br/>
   <form action="/articles/<%= article._id %>?_method=DELETE"
         method="post">
     <input type="submit" value="Delete Article">
