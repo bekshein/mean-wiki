@@ -6,7 +6,7 @@ var articleSchema = new Schema({
     title: { type: String, required: true },
     author: { type: String, required: true },
     date: { type: Date, default: Date.now },
-    category: [ String ],
+    category: Array,
     summary: { type: String, maxlength: 140 },
     content: { type: String, required: true },
     pastEdits: []
