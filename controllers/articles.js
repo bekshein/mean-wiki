@@ -24,18 +24,24 @@ router.get('/new', function (req, res) {
 
 // CREATE new article and redirects
 router.post('/', function (req, res) {
-  var articleOptions = req.body.article;
+  var newArticle = new Article(req.body.article);
 
-  articleOptions.category = articleOptions.category.split(/,\s?/);
-
-  Article.new(articleOptions, function (err, newArticle) {
+  newArticle.save(function (err, article) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.redirect(302, '/articles');
+    }
+  });
+});
+/*  Article.new(req.body.article, function (err, newArticle) {
     if (err) {
       res.redirect(302, '/articles/new');
     } else {
       res.redirect(302, '/articles');
     }
   });
-});
+}); */
 
 // SHOW article by id
 router.get('/:id', function (req, res) {
@@ -76,11 +82,7 @@ router.get('/:id/edit', function (req, res) {
 
 // UPDATE article and redirects
 router.patch('/:id', function (req, res) {
-  var articleOptions = req.body.article;
-
-  articleOptions.category = articleOptions.category.split(/,\s?/);
-
-  Article.findByIdAndUpdate(req.params.id, articleOptions, function (err, updatedArticle) {
+  Article.findByIdAndUpdate(req.params.id, req.body.article, function (err, updatedArticle) {
     if (err) {
       res.redirect(302, '/articles/edit');
     } else {
