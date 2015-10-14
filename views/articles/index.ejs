@@ -2,7 +2,7 @@
 
 <% articles.forEach(function (article, i) { %>
   <div>
-    <h4><%= article.title %> - <small>by <%= article.author %></small></h4>
+    <h4><a href="/articles/<%= article._id %>"><%= article.title %></a> - <small>by <%= article.author %></small></h4>
     <p><%= article.summary %></p>
   </div>
   <hr/>

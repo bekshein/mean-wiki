@@ -1,0 +1,11 @@
+<div>
+  <h4><%= article.title %> - <small>by <%= article.author %></small></h4>
+  <p><small>last updated: <%= article.date %></small></p>
+  <p>categories: <%= article.category.join(' & ') %></p>
+  <p><%= article.summary %></p>
+  <p><%= article.content %></p>
+  <form action="/articles/<%= article._id %>?_method=DELETE"
+        method="post">
+    <input type="submit" value="Delete Article">
+  </form>
+</div>
