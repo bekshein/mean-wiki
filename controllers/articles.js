@@ -23,6 +23,28 @@ router.get('/', function (req, res) {
   }
 });
 
+// INDEX articles by author
+router.get('/byUser/:name', function (req, res) {
+  if (!req.session.userId) {
+    req.session.flash.message = "You must be logged in to view page.";
+    res.redirect(302, '/session/new');
+  } else {
+    var authorName = req.params.name;
+
+    Article.find({ author: authorName}, function (err, authorArticles) {
+      if (err) {
+        req.session.flash.message = "Error finding index...";
+        res.redirect(302, '/articles');
+      } else {
+        res.render('articles/author', {
+          author: authorName,
+          articles: authorArticles
+        });
+      }
+    });
+  }
+});
+
 // NEW article form
 router.get('/new', function (req, res) {
   if (!req.session.userId) {
