@@ -45,6 +45,28 @@ router.get('/byUser/:name', function (req, res) {
   }
 });
 
+// INDEX articles by category
+router.get('/byCategory/:tag', function (req, res) {
+  if (!req.session.userId) {
+    req.session.flash.message = "You must be logged in to view page.";
+    res.redirect(302, '/session/new');
+  } else {
+    var catTag = req.params.tag;
+
+    Article.find({ category: catTag}, function (err, catArticles) {
+      if (err) {
+        req.session.flash.message = "Error finding index...";
+        res.redirect(302, '/articles');
+      } else {
+        res.render('articles/category', {
+          category: catTag,
+          articles: catArticles
+        });
+      }
+    });
+  }
+});
+
 // NEW article form
 router.get('/new', function (req, res) {
   if (!req.session.userId) {
