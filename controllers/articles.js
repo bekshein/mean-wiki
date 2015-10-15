@@ -9,7 +9,7 @@ var express = require('express'),
 router.get('/', function (req, res) {
   if (!req.session.userId) {
     req.session.flash.message = "You must be logged in to view page.";
-    res.redirect(302, '/users/login');
+    res.redirect(302, '/session/new');
   } else {
     Article.find({}, function (err, allArticles) {
       if (err) {
@@ -27,7 +27,7 @@ router.get('/', function (req, res) {
 router.get('/new', function (req, res) {
   if (!req.session.userId) {
     req.session.flash.message = "You must be logged in to view page.";
-    res.redirect(302, '/users/login');
+    res.redirect(302, '/session/new');
   } else {
     User.findById(req.session.userId, function (err, user) {
       if (err) {
@@ -64,7 +64,7 @@ router.post('/', function (req, res) {
 router.get('/:id', function (req, res) {
   if (!req.session.userId) {
     req.session.flash.message = "You must be logged in to view page.";
-    res.redirect(302, '/users/login');
+    res.redirect(302, '/session/new');
   } else {
     var articleID = req.params.id;
 
@@ -85,7 +85,7 @@ router.get('/:id', function (req, res) {
 router.delete('/:id', function (req, res) {
   if (!req.session.userId) {
     req.session.flash.message = "You must be logged in to view page...";
-    res.redirect(302, '/users/login');
+    res.redirect(302, '/session/new');
   } else {
     var articleID = req.params.id;
 
@@ -104,7 +104,7 @@ router.delete('/:id', function (req, res) {
 router.get('/:id/edit', function (req, res) {
   if (!req.session.userId) {
     req.session.flash.message = "You must be logged in to view page.";
-    res.redirect(302, '/users/login');
+    res.redirect(302, '/session/new');
   } else {
     var articleID = req.params.id;
 
