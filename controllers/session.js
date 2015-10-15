@@ -15,15 +15,16 @@ router.post('/', function (req, res) {
 
   User.findOne(userParams, function (err, user) {
     if (err) {
-      req.session.flash.message = "Some error has occurred.";
-      res.redirect(302, 'session/new');
+      req.session.flash.message = "Some error has occurred...";
+      res.redirect(302, '/session/new');
     } else if (user) {
       req.session.userId = user._id;
-      req.session.flash.message = "Thanks for signing in.";
-      res.redirect(302, 'users/' + user._id);
+      req.session.userName = user.name;
+      req.session.flash.message = "Thanks for signing in...";
+      res.redirect(302, '/');
     } else {
-      req.session.flash.message = "Email and password combination does not exist / match.";
-      res.redirect(302, 'session/new');
+      req.session.flash.message = "Email and password combination does not exist / match...";
+      res.redirect(302, '/session/new');
     }
   });
 });
@@ -31,9 +32,9 @@ router.post('/', function (req, res) {
 // User logged out
 router.delete('/', function (req, res) {
   delete req.session.userId;
-
+  delete req.session.userName;
   req.session.flash.message = "Thanks for signing out.";
-  res.redirect(302, '/session/new');
+  res.redirect(302, '/');
 });
 
 module.exports = router;
