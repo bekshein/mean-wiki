@@ -6,6 +6,7 @@
     <h4><a href="/articles/<%= article._id %>"><%= article.title %></a> - <small>by <a href="/articles/byUser/<%= article.author %>"><%= article.author %></a></small></h4>
     <p class="lead"><%= article.summary %></p>
     <p class="text-muted">categories: <a href="/articles/byCategory/<%= article.category.join(' & ') %>"><%= article.category.join(' & ') %></a></p>
+    <p><small>posted on: <%= article.date %></small></p>
     <p><a href="/articles/<%= article._id %>">Read More</a></p>
     <hr>
   <% }) %>
