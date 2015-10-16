@@ -1,11 +1,10 @@
-<a href="/articles/new">Create a new Article</a>
-
-<h3>All Articles</h3>
-
-<% articles.forEach(function (article, i) { %>
-  <div>
-    <h4><a href="/articles/<%= article._id %>"><%= article.title %></a> - <small>by <%= article.author %></small></h4>
-    <p><%= article.summary %></p>
+<div class="container">
+  <div class="page-header">
+    <h1>All Articles</h1>
   </div>
-  <hr/>
-<% }) %>
+  <% articles.forEach(function (article, i) { %>
+    <h4><a href="/articles/<%= article._id %>"><%= article.title %></a> - <small>by <a href="/articles/byUser/<%= article.author %>"><%= article.author %></a></small></h4>
+    <p class="lead"><%= article.summary %></p>
+    <p><a href="/articles/<%= article._id %>">Read More</a></p>
+  <% }) %>
+</div>
