@@ -1,6 +1,6 @@
 <div class="container">
   <div class="page-header">
-    <h2><%= article.title %> <br/><small>by <%= article.author %></small></h2>
+    <h2><%= article.title %> <br/><small>by <a href="/articles/byUser/<%= article.author %>"><%= article.author %></a></small></h2>
     <p>last updated: <%= article.date %></p>
     <p class="text-muted">categories: <%= article.category.join(' & ') %></p>
   </div>
