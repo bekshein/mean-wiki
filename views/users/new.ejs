@@ -1,19 +1,41 @@
-<h3>Please Sign Up</h3>
-<form action="/users" method="post">
+<div class="container">
+
+<form class="form-signin" action="/users" method="post">
+  <h2 class="form-signin-heading">Please sign up</h2>
+  <div class="form-group">
+  <label for="inputName">User Name</label>
   <input type="text"
+         id="inputName"
+         class="form-control"
          name="user[name]"
-         placeholder="Your Name"><br/>
+         placeholder="User Name">
+  </div>
+  <div class="form-group">
+  <label for="inputEmail">Email address</label>
   <input type="email"
+         id="inputEmail"
+         class="form-control"
          name="user[email]"
-         placeholder="email@gmail.com"><br/>
+         placeholder="email@gmail.com">
+  </div>
+  <div class="form-group">
+  <label for="inputPassword">Password</label>
   <input type="password"
+         id="inputPassword"
+         class="form-control"
          name="user[password]"
-         placeholder="password"><br/>
+         placeholder="Make it a good one">
+  </div>
+  <div class="form-group">
+  <label for="inputPasswordVer">Retype Password</label>
   <input type="password"
+         id="inputPasswordVer"
+         class="form-control"
          name="user[passwordVerification]"
-         placeholder="password verification"><br/>
-  <input type="submit" value="Sign Up">
+         placeholder="password verification">
+  </div>
+  <button type="submit" class="btn btn-default">Sign Up</button>
 </form>
 
-<hr>
-[<a href="/session/new">Sign In</a>]
+<a href="/session/new">Already have an account? Sign In</a>
+</div>
