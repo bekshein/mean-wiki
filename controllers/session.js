@@ -21,7 +21,7 @@ router.post('/', function (req, res) {
       req.session.userId = user._id;
       req.session.userName = user.name;
       req.session.flash.message = "Thanks for signing in...";
-      res.redirect(302, '/');
+      res.redirect(302, '/articles');
     } else {
       req.session.flash.message = "Email and password combination does not exist / match...";
       res.redirect(302, '/session/new');
