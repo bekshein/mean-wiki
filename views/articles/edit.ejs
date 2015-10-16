@@ -1,43 +1,56 @@
-<h2>Editing Article <%= article._id %></h2>
+<div class="container">
+
 <form action="/articles/<%= article._id %>?_method=PATCH" method="post">
-  <h4>Article Title</h4>
+  <h2 class="form-signin-heading">Editing Article <%= article._id %></h2>
+  <div class="form-group">
+  <label for="inputTitle">Article Title</label>
   <input type="text"
+         id="inputTitle"
+         class="form-control"
          name="article[title]"
-         placeholder="title of article"
-         value="<%= article.title %>"><br/>
-  <h4>Author Name</h4>
+         value="<%= article.title %>">
+  </div>
+  <div class="form-group">
+  <label for="inputAuthor">Author Name</label>
   <input type="text"
+         id="inputAuthor"
+         class="form-control"
          name="article[author]"
-         placeholder="author of article"
-         value="<%= article.author %>"><br/>
+         value="<%= article.author %>">
+  </div>
   <h4>Categories</h4>
-  <label for="category1">category 1</label>
+  <div class="checkbox">
+  <label for="category1">Music</label>
   <input id="category1"
          type="checkbox"
          name="article[category][]"
-         value="category1">
-  <label for="category2">category 2</label>
+         value="Music">
+  <label for="category2">Media</label>
   <input id="category2"
           type="checkbox"
           name="article[category][]"
-          value="category2">
-  <label for="category3">category 3</label>
+          value="Media">
+  <label for="category3">Sports</label>
   <input id="category3"
          type="checkbox"
          name="article[category][]"
-         value="category3">
-  <label for="category4">category 4</label>
+         value="Sports">
+  <label for="category4">Technology</label>
   <input id="category4"
          type="checkbox"
          name="article[category][]"
-         value="category4"><br/>
-  <h4>Summary</h4>
+         value="Technology">
+  </div>
+  <div class="form-group">
+  <label for="inputSummary">Summary</label>
   <input type="text"
+         id="inputSummary"
+         class="form-control"
          name="article[summary]"
          maxlength=140
-         placeholder="summary of article, limit 140 characters"
-         value="<%= article.summary %>"><br/>
+         value="<%= article.summary %>">
+  </div>
   <h4>Write away...</h4>
-  <textarea name="article[content]" value="<%= article.content %>"></textarea><br/>
-  <input type="submit" value="Save Changes">
+  <textarea class="form-control" rows="30" name="article[content]" value="<%= article.content %>"></textarea><br/>
+  <button type="submit" class="btn btn-success">Save Changes</button>
 </form>
