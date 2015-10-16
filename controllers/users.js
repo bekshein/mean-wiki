@@ -52,7 +52,7 @@ router.post('/', function (req, res) {
         res.redirect(302, '/users/new');
       } else {
         req.session.flash.message = "Sign up successful!";
-        res.redirect(302, '/');
+        res.redirect(302, '/articles');
       }
     });
   } else {
