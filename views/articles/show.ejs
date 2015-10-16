@@ -1,14 +1,16 @@
-<a href="/articles">Back to all Articles</a>
-
-<div>
-  <h4><%= article.title %> - <small>by <%= article.author %></small></h4>
-  <p><small>last updated: <%= article.date %></small></p>
-  <p>categories: <%= article.category.join(' & ') %></p>
-  <p><%= article.summary %></p>
+<div class="container">
+  <div class="page-header">
+    <h2><%= article.title %> <br/><small>by <%= article.author %></small></h2>
+    <p>last updated: <%= article.date %></p>
+    <p class="text-muted">categories: <%= article.category.join(' & ') %></p>
+  </div>
   <p><%= article.content %></p>
-  <a href="/articles/<%= article._id %>/edit">Edit this Article</a><br/>
+  <p>
+  <a class="btn btn-warning" href="/articles/<%= article._id %>/edit" role="button">Edit Article</a>
   <form action="/articles/<%= article._id %>?_method=DELETE"
         method="post">
-    <input type="submit" value="Delete Article">
+    <button type="submit" class="btn btn-danger">Delete Article</button>
   </form>
+  </p>
+  <p>Back to <a href="/articles">all articles</a>.</p>
 </div>
