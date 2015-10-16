@@ -5,6 +5,7 @@
     <p class="text-muted">categories: <a href="/articles/byCategory/<%= article.category.join(' & ') %>"><%= article.category.join(' & ') %></a></p>
   </div>
   <p><%= article.content %></p>
+  <hr>
   <p>
   <a class="btn btn-warning btn-sm" href="/articles/<%= article._id %>/edit" role="button">Edit Article</a>
   <form action="/articles/<%= article._id %>?_method=DELETE"
