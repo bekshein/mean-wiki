@@ -10,15 +10,15 @@
       <a class="navbar-brand" href="#">Company Wiki</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
+      <form class="navbar-form navbar-right" action="/session?_method=DELETE" method="POST">
+        <button type="submit" class="btn btn-success">Sign Out</button>
+      </form>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="/articles">View All Articles</a></li>
         <li><a href="/articles/new">Create New Article</a></li>
         <li><a href="/users">View All Users</a></li>
         <li><a href="'/users/' + req.session.userId + '/edit'">Edit Your Settings</a></li>
       </ul>
-      <form class="navbar-form navbar-right" action="/session?_method=DELETE" method="POST">
-        <button type="submit" class="btn btn-success">Sign Out</button>
-      </form>
     </div>
   </div>
 </nav>
