@@ -2,6 +2,7 @@
 
 var express = require('express'),
     router  = express.Router(),
+    Article = require('../models/article'),
     User    = require('../models/user');
 
 // INDEX all users stored in db
