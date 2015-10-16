@@ -1,0 +1,32 @@
+<div class="container">
+
+  <a href="/articles">View all Article</a>
+  <a href="/articles/new">Create a new Article</a>
+
+  <h2 class="sub-header">All Users</h2>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>User Name</th>
+            <th>Email Address</th>
+            <th>User's Articles</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% users.forEach(function (user, i) { %>
+          <tr>
+            <td><%= user.name %></td>
+            <td><a href="mailto:<%= user.email %>"><%= user.email %></a></td>
+            <td><a href="/articles/byUser/<%= user.name %>">View User's Articles</a></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+<form action="/session?_method=DELETE" method="POST">
+  <input type="submit" value="Sign Out">
+</form>
+
+</div>
