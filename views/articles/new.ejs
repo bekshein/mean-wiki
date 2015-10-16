@@ -10,36 +10,24 @@
          name="article[title]"
          placeholder="title of article">
   </div>
-  <div class="form-group">
-  <label for="inputAuthor">Author Name</label>
-  <input type="text"
-         id="inputAuthor"
-         class="form-control"
-         name="article[author]"
-         placeholder="author of article">
-  </div>
-  <h4>Categories</h4>
+  <label for="inputCategories">Categories</label>
   <div class="checkbox">
-  <label for="category1">Music</label>
-  <input id="category1"
-         type="checkbox"
-         name="article[category][]"
-         value="Music">
-  <label for="category2">Media</label>
-  <input id="category2"
-          type="checkbox"
-          name="article[category][]"
-          value="Media">
-  <label for="category3">Sports</label>
-  <input id="category3"
-         type="checkbox"
-         name="article[category][]"
-         value="Sports">
-  <label for="category4">Technology</label>
-  <input id="category4"
-         type="checkbox"
-         name="article[category][]"
-         value="Technology">
+    <label>
+      <input type="checkbox" name="article[category][]"
+      value="Music"> Music
+    </label>
+    <label>
+      <input type="checkbox" name="article[category][]"
+      value="Media"> Media
+    </label>
+    <label>
+      <input type="checkbox" name="article[category][]"
+      value="Sports"> Sports
+    </label>
+    <label>
+      <input type="checkbox" name="article[category][]"
+      value="Technology"> Technology
+    </label>
   </div>
   <div class="form-group">
   <label for="inputSummary">Summary</label>
@@ -50,7 +38,7 @@
          maxlength=140
          placeholder="summary of article, limit 140 characters">
   </div>
-  <h4>Write away...</h4>
+  <label for="inputText">Write away...</label>
   <textarea class="form-control" rows="30" name="article[content]"></textarea><br/>
   <button type="submit" class="btn btn-success">Post It</button>
 </form>
