@@ -23,9 +23,12 @@ server.use(session({
 }));
 
 server.use(function (req, res, next) {
-    res.locals.flash  = req.session.flash || {};
-    req.session.flash = {};
-    next();
+  res.locals.flash  = req.session.flash || {};
+  req.session.flash = {};
+  res.locals.userId = req.session.userId || {};
+  res.locals.userName = req.session.userName || {};
+
+  next();
 });
 
 server.use(morgan('dev'));
@@ -38,20 +41,27 @@ server.use(methodOverride("_method"));
 server.use(function (req, res, next) {
   console.log("REQ DOT BODY", req.body);
   console.log("REQ DOT SESSION", req.session);
+
   next();
 });
 
-// model based controllers
+// model based route controllers
 server.use('/articles', require('./controllers/articles'));
 server.use('/session', require('./controllers/session'));
 server.use('/users', require('./controllers/users'));
 
+// force login before routing to articles index
 server.get('/', function (req, res) {
-  res.render('welcome');
+  if (req.session.userId) {
+    res.redirect(302, '/articles');
+  } else {
+    res.render('welcome');
+  }
+  res.end();
 });
 
 
-
+// connect to server and db
 mongoose.connect(MONGOURI + "/" + dbname);
 server.listen(PORT, function() {
   console.log("SERVER IS UP ON PORT:", PORT);
