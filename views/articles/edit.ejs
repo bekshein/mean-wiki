@@ -1,7 +1,7 @@
 <div class="container">
 
 <form action="/articles/<%= article._id %>?_method=PATCH" method="post">
-  <h2 class="form-signin-heading">Editing Article <%= article._id %></h2>
+  <h2 class="form-signin-heading">Editing Article <%= article.title %></h2>
   <div class="form-group">
   <label for="inputTitle">Article Title</label>
   <input type="text"
