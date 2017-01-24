@@ -25,7 +25,7 @@ server.use(session({
 server.use(function (req, res, next) {
   res.locals.flash  = req.session.flash || {};
   req.session.flash = {};
-  res.locals.userId = req.session.userId || {};
+  res.locals.userId = req.session.userId;
   res.locals.userName = req.session.userName || {};
 
   next();
