@@ -7,64 +7,49 @@ var express = require('express'),
 
 // INDEX all articles stored in db
 router.get('/', function (req, res) {
-  if (!req.session.userId) {
-    req.session.flash.message = "You must be logged in to view page.";
-    res.redirect(302, '/session/new');
-  } else {
-    Article.find({}, function (err, allArticles) {
-      if (err) {
-        req.session.flash.message = "Error finding index...";
-      } else {
-        res.render('articles/index', {
-          articles: allArticles
-        });
-      }
-    });
-  }
+  Article.find({}, function (err, allArticles) {
+    if (err) {
+      req.session.flash.message = "Error finding index...";
+    } else {
+      res.render('articles/index', {
+        articles: allArticles
+      });
+    }
+  });
 });
 
 // INDEX articles by author
 router.get('/byUser/:name', function (req, res) {
-  if (!req.session.userId) {
-    req.session.flash.message = "You must be logged in to view page.";
-    res.redirect(302, '/session/new');
-  } else {
-    var authorName = req.params.name;
+  var authorName = req.params.name;
 
-    Article.find({ author: authorName}, function (err, authorArticles) {
-      if (err) {
-        req.session.flash.message = "Error finding index...";
-        res.redirect(302, '/articles');
-      } else {
-        res.render('articles/author', {
-          author: authorName,
-          articles: authorArticles
-        });
-      }
-    });
-  }
+  Article.find({ author: authorName}, function (err, authorArticles) {
+    if (err) {
+      req.session.flash.message = "Error finding index...";
+      res.redirect(302, '/articles');
+    } else {
+      res.render('articles/author', {
+        author: authorName,
+        articles: authorArticles
+      });
+    }
+  });
 });
 
 // INDEX articles by category
 router.get('/byCategory/:tag', function (req, res) {
-  if (!req.session.userId) {
-    req.session.flash.message = "You must be logged in to view page.";
-    res.redirect(302, '/session/new');
-  } else {
-    var catTag = req.params.tag;
+  var catTag = req.params.tag;
 
-    Article.find({ category: catTag}, function (err, catArticles) {
-      if (err) {
-        req.session.flash.message = "Error finding index...";
-        res.redirect(302, '/articles');
-      } else {
-        res.render('articles/category', {
-          category: catTag,
-          articles: catArticles
-        });
-      }
-    });
-  }
+  Article.find({ category: catTag}, function (err, catArticles) {
+    if (err) {
+      req.session.flash.message = "Error finding index...";
+      res.redirect(302, '/articles');
+    } else {
+      res.render('articles/category', {
+        category: catTag,
+        articles: catArticles
+      });
+    }
+  });
 });
 
 // NEW article form
@@ -106,23 +91,18 @@ router.post('/', function (req, res) {
 
 // SHOW article by id
 router.get('/:id', function (req, res) {
-  if (!req.session.userId) {
-    req.session.flash.message = "You must be logged in to view page.";
-    res.redirect(302, '/session/new');
-  } else {
-    var articleID = req.params.id;
+  var articleID = req.params.id;
 
-    Article.findById(articleID, function (err, specificArticle) {
-      if (err) {
-        req.session.flash.message = "Error finding Article...";
-        res.redirect(302, '/articles');
-      } else {
-        res.render('articles/show', {
-          article: specificArticle
-        });
-      }
-    });
-  }
+  Article.findById(articleID, function (err, specificArticle) {
+    if (err) {
+      req.session.flash.message = "Error finding Article...";
+      res.redirect(302, '/articles');
+    } else {
+      res.render('articles/show', {
+        article: specificArticle
+      });
+    }
+  });
 });
 
 // DELETE article and redirects
