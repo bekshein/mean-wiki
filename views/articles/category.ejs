@@ -3,9 +3,11 @@
     <h1>Articles about <%= category %></h1>
   </div>
   <% articles.forEach(function (article, i) { %>
-    <h4><a href="/articles/<%= article._id %>"><%= article.title %></a> - <small>posted on: <%= article.date %></small></h4>
+    <h4><a href="/articles/<%= article._id %>"><%= article.title %></a> - <small>by <a href="/articles/byUser/<%= article.author %>"><%= article.author %></a></small></h4>
     <p class="lead"><%= article.summary %></p>
+    <p><small>posted on: <%= article.date %></small></p>
     <p><a href="/articles/<%= article._id %>">Read More</a></p>
     <hr>
   <% }) %>
+  <p>Back to <a href="/articles">all articles</a>.</p>
 </div>
