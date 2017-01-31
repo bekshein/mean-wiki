@@ -6,7 +6,7 @@ var express           = require('express'),
     bodyParser        = require('body-parser'),
     morgan            = require('morgan'),
     methodOverride    = require('method-override'),
-    MONGOURI          = process.env.MONGOLAB_URI || "mongodb://localhost:27017",
+    MONGODBURI        = process.env.MONGODB_URI || "mongodb://localhost:27017",
     dbname            = "wiki",
     mongoose          = require('mongoose'),
     Schema            = mongoose.Schema,
@@ -62,7 +62,7 @@ server.get('/', function (req, res) {
 
 
 // connect to server and db
-mongoose.connect(MONGOURI + "/" + dbname);
+mongoose.connect(MONGODBURI + "/" + dbname);
 server.listen(PORT, function() {
   console.log("SERVER IS UP ON PORT:", PORT);
 });
