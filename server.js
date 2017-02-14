@@ -1,68 +1,74 @@
-var express           = require('express'),
-    PORT              = process.env.PORT || 3000,
-    server            = express(),
-    ejs               = require('ejs'),
-    expressEjsLayouts = require('express-ejs-layouts'),
-    bodyParser        = require('body-parser'),
-    morgan            = require('morgan'),
-    methodOverride    = require('method-override'),
-    MONGODBURI        = process.env.MONGODB_URI || "mongodb://localhost:27017",
-    dbname            = "wiki",
-    mongoose          = require('mongoose'),
-    Schema            = mongoose.Schema,
-    session           = require('express-session');
+var express         = require('express'),
+    PORT            = process.env.PORT || 3000,
+    server          = express(),
+    path            = require('path'),
+    favicon         = require('serve-favicon'),
+    ejs             = require('ejs'),
+    cookieParser    = require('cookie-parser'),
+    bodyParser      = require('body-parser'),
+    morgan          = require('morgan'),
+    methodOverride  = require('method-override'),
+    MONGODBURI      = process.env.MONGODB_URI || "mongodb://localhost:27017",
+    dbname          = "wiki",
+    mongoose        = require('mongoose'),
+    passport        = require('passport');
 
+// connect to db
+mongoose.connect(MONGODBURI + "/" + dbname);
 
-server.set('views', './views');
+// mongoose model registers
+require('./models/article');
+require('./models/comment');
+require('./models/user');
+
+// passport configuration
+require('./config/passport');
+
+// all routes
+var routes = require('./routes/index');
+
+// view engine setup
+server.set('views', path.join(__dirname, 'views'));
 server.set('view engine', 'ejs');
 
-server.use(session({
-  secret: "Wiki on the Rocks",
-  resave: false,
-  saveUninitialized: true
-}));
-
-server.use(function (req, res, next) {
-  res.locals.flash  = req.session.flash || {};
-  req.session.flash = {};
-  res.locals.userId = req.session.userId;
-  res.locals.userName = req.session.userName || {};
-
-  next();
-});
-
+server.use(favicon(path.join(__dirname, 'public/images', 'favicon.ico')));
 server.use(morgan('dev'));
-server.use(express.static('./public'));
-server.use(expressEjsLayouts);
-server.use(bodyParser.urlencoded({ extended: true }));
-server.use(methodOverride("_method"));
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({ extended: false }));
+server.use(cookieParser());
+server.use(express.static(path.join(__dirname, 'public')));
+server.use(passport.initialize());
 
+server.use('/', routes);
 
-server.use(function (req, res, next) {
-  console.log("REQ DOT BODY", req.body);
-  console.log("REQ DOT SESSION", req.session);
-
-  next();
-});
+// server.use(methodOverride("_method"));
 
 // model based route controllers
-server.use('/articles', require('./controllers/articles'));
-server.use('/session', require('./controllers/session'));
-server.use('/users', require('./controllers/users'));
+// server.use('/articles', require('./controllers/articles'));
+// server.use('/users', require('./controllers/users'));
 
-// force login before routing to articles index
-server.get('/', function (req, res) {
-  if (req.session.userId) {
-    res.redirect(302, '/articles');
-  } else {
-    res.render('welcome');
-  }
-  res.end();
+
+// catch 404 and forward to error handler
+server.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
+// error handler
+server.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.server.get('env') === 'development' ? err : {};
 
-// connect to server and db
-mongoose.connect(MONGODBURI + "/" + dbname);
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+// connect to server
 server.listen(PORT, function() {
   console.log("SERVER IS UP ON PORT:", PORT);
 });
+
+module.exports = server;
