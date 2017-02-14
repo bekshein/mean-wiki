@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html ng-app="meanWiki">
+  <head>
+    <meta charset="utf-8">
+    <title>MEAN Wiki</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/app.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.4.2/angular-ui-router.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap.min.js"></script>
+    <script type="text/javascript" src="/javascripts/angularApp.js"></script>
+  </head>
+  <body>
+    <header ng-controller="NavCtrl">
+      <nav class="navbar navbar-inverse navbar-fixed-top navbar-inner" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" ng-click="isNavCollapsed = !isNavCollapsed">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <div id="logo" class="navbar-brand">
+              <a href="/#/home">MEAN Wiki</a>
+            </div>
+          </div>
+          <div class="collapse navbar-collapse" uib-collapse="isNavCollapsed">
+            <ul class="nav navbar-nav navbar-right">
+              <li ng-show="isLoggedIn()"><a>{{ currentUser() }}</a></li>
+              <li ng-show="isLoggedIn()"><a href="#/articles/new">New Article</a></li>
+              <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
+              <li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
+              <li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <div id="main_content" class="container">
+      <div id="content" class="col-md-9-offset-3 center-block">
+        <ui-view></ui-view>
+      </div>
+    </div>
+
+    <script type="text/ng-template" id="/home.html">
+      <div class="container">
+        <div class="page-header">
+          <h1>All Articles</h1>
+        </div>
+        <div class="link row clearfix" ng-repeat="article in articles | orderBy: '-date'">
+          <h3 class="title">
+            <a href="#/articles/{{article._id}}">{{article.title}}</a>
+          </h3>
+          <p class="author"><small>posted by <strong><a href="#/articles/byUser/{{article.author}}">{{article.author}}</a></strong> on {{article.date | date: "shortDate"}}</small></p>
+          <p class="lead">{{article.summary}}</p>
+          <div class="btn-group">
+            <a class="btn btn-default btn-sm" href="#/articles/{{article._id}}">Read More</a>
+            <a class="btn btn-default btn-sm" href="#/articles/{{article._id}}">{{article.comments.length}} Comments</a>
+          </div>
+        </div>
+
+        <div ng-hide="isLoggedIn()">
+          <h5>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can post an article.</h5>
+        </div>
+      </div>
+    </script>
+
+    <script type="text/ng-template" id="/author.html">
+      <div class="container">
+        <div class="page-header">
+          <h1>Articles by {{author}}</h1>
+        </div>
+        <div class="link row clearfix" ng-repeat="article in articles | orderBy: '-date'">
+          <h4 class="title">
+            <a href="#/articles/{{article._id}}">{{article.title}}</a>
+            <small class="author"> posted on {{article.date | date: "shortDate"}}</small>
+          </h4>
+          <p class="lead">{{article.summary}}</p>
+          <div class="btn-group">
+            <a class="btn btn-default btn-sm" href="#/articles/{{article._id}}">Read More</a>
+            <a class="btn btn-default btn-sm" href="#/articles/{{article._id}}">{{article.comments.length}} Comments</a>
+          </div>
+        </div>
+        <p>Back to <a href="#/articles">all articles</a>.</p>
+
+        <div ng-hide="isLoggedIn()">
+          <h5>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can post an article.</h5>
+        </div>
+      </div>
+    </script>
+
+    <script type="text/ng-template" id="/new.html">
+      <div class="container">
+        <div ng-show="error" class="alert alert-danger row">
+          <span>{{ error.message }}</span>
+        </div>
+
+        <form ng-submit="addArticle()" ng-show="isLoggedIn()">
+          <h3 class="form-signin-heading">Create a New Article</h3>
+          <div class="form-group">
+            <label for="inputTitle">Article Title</label>
+            <input type="text" id="inputTitle" class="form-control" placeholder="Title" ng-model="title" />
+          </div>
+          <div class="form-group">
+            <label for="inputSummary">Summary</label>
+            <input type="text" id="inputSummary" class="form-control" maxlength=140 placeholder="summary of article, limit 140 characters" ng-model="summary" />
+          </div>
+          <div class="form-group">
+            <label for="inputText">Write away...</label>
+            <textarea class="form-control" rows="20" ng-model="content"></textarea>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Post Article</button>
+            <a class="btn btn-default" href="#/articles">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </script>
+
+    <script type="text/ng-template" id="/articles.html">
+      <div id="article_content" class="container">
+        <div class="page-header">
+          <h2 class="title">
+            {{article.title}}
+          </h2>
+          <p class="author">posted by <strong><a href="#/articles/byUser/{{article.author}}">{{article.author}}</a></strong> on {{article.date | date: "shortDate"}}</p>
+        </div>
+        <p class="body">{{article.content}}</p>
+        <hr>
+        <div class="btn-group" ng-show="isLoggedIn()">
+          <a ng-click="deleteArticle(article)" class="btn btn-default btn-sm">Delete Article</a>
+        </div>
+        <div class="btn-group">
+          <a class="btn btn-default btn-sm" href="#/articles">Back to all articles</a>
+        </div>
+
+        <h3 class="comments_title">
+          {{article.comments.length}} Comments
+        </h3>
+        <div id="comments" ng-repeat="comment in article.comments | orderBy: '-date'">
+          <div class="comment wrapper clearfix">
+            <p class="lead">{{comment.body}}</p>
+            <p><small>Submitted on <strong>{{comment.date | date: "shortDate"}}</strong> by {{comment.author}}</small></p>
+          </div>
+        </div>
+
+        <div ng-hide="isLoggedIn()">
+          <h5>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can comment on an article.</h5>
+        </div>
+
+        <form ng-submit="addComment()" ng-show="isLoggedIn()">
+          <h3>Add a new comment</h3>
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Comment" ng-model="body" />
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Add Comment</button>
+          </div>
+        </form>
+      </div>
+    </script>
+
+    <script type="text/ng-template" id="edit.html">
+      <div class="container">
+        <form ng-submit="updateArticle()" ng-show="isLoggedIn()">
+          <h3 class="form-signin-heading">Edit Article</h3>
+          <div class="form-group">
+            <label for="inputTitle">Article Title</label>
+            <input type="text" id="inputTitle" class="form-control" value="{{article.title}}" ng-model="title" />
+          </div>
+          <div class="form-group">
+            <label for="inputSummary">Summary</label>
+            <input type="text" id="inputSummary" class="form-control" maxlength=140 value="{{article.summary}}" ng-model="summary" />
+          </div>
+          <div class="form-group">
+            <label for="inputText">Write away...</label>
+            <textarea class="form-control" rows="20" ng-model="content">{{article.content}}</textarea>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Update Article</button>
+            <a class="btn btn-default" href="#/articles/{{article._id}}">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </script>
+
+    <script type="text/ng-template" id="/register.html">
+      <div class="container">
+        <div ng-show="error" class="alert alert-danger row">
+          <span>{{ error.message }}</span>
+        </div>
+
+        <form class="form-signin" ng-submit="register()">
+          <h3 class="form-signin-heading">Register</h3>
+          <div class="form-group">
+            <label for="inputName">Username</label>
+            <input type="text" id="inputName" class="form-control" placeholder="Username" ng-model="user.username" />
+          </div>
+          <div class="form-group">
+            <label for="inputEmail">Email address</label>
+            <input type="email" id="inputEmail" class="form-control" ng-model="user.email" placeholder="email@gmail.com">
+          </div>
+          <div class="form-group">
+            <label for="inputPassword">Password</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" ng-model="user.password" />
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Register</button>
+          </div>
+          <p>Already have an account? <a href="#/login">Sign In</a>.</p>
+        </form>
+      </div>
+    </script>
+
+    <script type="text/ng-template" id="/login.html">
+      <div class="container">
+        <div ng-show="error" class="alert alert-danger row">
+          <span>{{ error.message }}</span>
+        </div>
+
+        <form class="form-signin" ng-submit="logIn()">
+          <h3 class="form-signin-heading">Log In</h3>
+          <div class="form-group">
+            <label for="inputName">Username</label>
+            <input type="text" id="inputName" class="form-control" placeholder="Username" ng-model="user.username" />
+          </div>
+          <div class="form-group">
+            <label for="inputPassword">Password</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" ng-model="user.password" />
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Log In</button>
+          </div>
+          <p>Don't have an account? <a href="#/register">Register</a>.</p>
+        </form>
+      </div>
+    </script>
+
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted">MEAN Wiki.</p>
+      </div>
+    </footer>
+  </body>
+</html>
