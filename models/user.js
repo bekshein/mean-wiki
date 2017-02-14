@@ -1,30 +1,42 @@
 var mongoose = require('mongoose'),
-    Schema   = mongoose.Schema;
+    crypto   = require('crypto'),
+    jwt      = require('jsonwebtoken');
 
 // defined user schema
-var userSchema = new Schema({
-    name: { type: String, required: true, unique: true },
-    email: { type: String, required: true },
-    password: { type: String, required: true }
+var UserSchema = new mongoose.Schema({
+    username: { type: String, lowercase: true, unique: true },
+    email: String,
+    hash: String,
+    salt: String
 });
 
-// creates user method to be used on user routes
-userSchema.statics.findOrCreateByEmail = function (params, callback) {
-  this.findOne({
-    email: params.email
-  }, function (err, user) {
-    if (err) {
-      callback(err, null);
-    } else if (user) {
-      callback(null, user);
-    } else {
-      this.model.create(params, callback);
-    }
-  });
+// accepts a password then generates a salt and associated password hash
+UserSchema.methods.setPassword = function (password) {
+  this.salt = crypto.randomBytes(16).toString('hex');
+
+  this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
+};
+
+// accepts a password and compares it to the hash stored, returning a boolean
+UserSchema.methods.validPassword = function (password) {
+  var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
+
+  return this.hash === hash;
+};
+
+// signed payload with expiration set
+UserSchema.methods.generateJWT = function () {
+  // set expiration to 60 days
+  var today = new Date();
+  var exp   = new Date(today);
+  exp.setDate(today.getDate() + 60);
+
+  return jwt.sign({
+    _id: this._id,
+    username: this.username,
+    exp: parseInt(exp.getTime() / 1000),
+  }, 'SECRET');
 };
 
 // user model
-var User = mongoose.model('User', userSchema);
-
-// user model export
-module.exports = User;
+mongoose.model('User', UserSchema);
