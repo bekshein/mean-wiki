@@ -1,19 +1,14 @@
-var mongoose = require('mongoose'),
-    Schema   = mongoose.Schema;
+var mongoose = require('mongoose');
 
 // defined article schema
-var articleSchema = new Schema({
+var ArticleSchema = new mongoose.Schema({
     title: { type: String, required: true },
     author: { type: String, required: true },
     date: { type: Date, default: Date.now },
-    category: Array,
     summary: { type: String, maxlength: 140 },
     content: { type: String, required: true },
-    pastEdits: []
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
 });
 
 // article model
-var Article = mongoose.model('Article', articleSchema);
-
-// article model export
-module.exports = Article;
+mongoose.model('Article', ArticleSchema);
